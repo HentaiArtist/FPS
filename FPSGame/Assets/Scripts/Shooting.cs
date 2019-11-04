@@ -24,7 +24,7 @@ public class Shooting : MonoBehaviour
     AudioSource gunAudio;
     Light gunLight;
     float effectsDisplayTime = 0.2f;
-    public KeyCode ReloadKey;
+   
     public AudioClip ReloadSound;
     public int AmmoCount;
     public int CurAmmo;
