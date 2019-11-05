@@ -70,7 +70,6 @@
     <Compile Include="Assets\SampleScenes\Scripts\ParticleSceneControls.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\PlaceTargetWithMouse.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\SlowMoButton.cs" />
-    <Compile Include="Assets\Scripts\Aiming.cs" />
     <Compile Include="Assets\Scripts\ContactDamage.cs" />
     <Compile Include="Assets\Scripts\Controller.cs" />
     <Compile Include="Assets\Scripts\DamageSystem.cs" />
@@ -80,6 +79,7 @@
     <Compile Include="Assets\Scripts\PickingUpWeapon.cs" />
     <Compile Include="Assets\Scripts\PickUps.cs" />
     <Compile Include="Assets\Scripts\Shooting.cs" />
+    <Compile Include="Assets\Scripts\StandartProjectile.cs" />
     <None Include="Assets\SampleScenes\Shaders\Skybox-Procedural.shader" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/pxlan/Desktop/Груповой Гит/AlcocholForMySoul/FPS/FPSGame/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>

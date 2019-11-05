@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+public enum WeaponShootType
+{
+    CHARGE,
+    AUTO,
+    MANUAL
+}
 
 public class Shooting : MonoBehaviour
 {
-
-
-
-    // оч много тупо перепечатал с гайдов но я хочу спать и у меня дз не деланое надеюсь разберетесь 
-  
+    public float LastShot;
+    public GameObject Projectile;
+    public int BulletsPerShot;
+    public WeaponShootType shootType;
+    public GameObject projectile;          
     public GameObject Gun;
     public int damagePerShot;
     public float RayLifeTime;
@@ -24,7 +29,7 @@ public class Shooting : MonoBehaviour
     AudioSource gunAudio;
     Light gunLight;
     float effectsDisplayTime = 0.2f;
-   
+    public AudioClip ShootSound;
     public AudioClip ReloadSound;
     public int AmmoCount;
     public int CurAmmo;
@@ -32,10 +37,10 @@ public class Shooting : MonoBehaviour
     public Text Ammotext;
     public Text AmmoCounttext;
     public Transform Gunslot;
-    public float AIMPower;
+    public Transform ProjectileSpawn;
     public int MaxAmmo;
-    public float ASpeed;
-    public float UnASpeed;
+    public float delayBetweenShots;
+
     void Awake()
     {
 
@@ -50,12 +55,12 @@ public class Shooting : MonoBehaviour
 
     void Update()
     {
-        
-        
+
+      //  if ( ) {
             Ammotext.text = CurAmmo.ToString();
             AmmoCounttext.text = AmmoCount.ToString();
-        
-        timer += Time.deltaTime;
+          //     }
+      //  timer += Time.deltaTime;
         //if (Input.GetKeyDown(ReloadKey) && AmmoCount != 0 )
         //{
         // Reload();
@@ -81,50 +86,123 @@ public class Shooting : MonoBehaviour
         gunLight.enabled = false;
     }
 
+    public bool ShootInputType(bool inputDown, bool inputHeld, bool inputUp)
+    {
+        switch (shootType)
+        {
+            case WeaponShootType.MANUAL:
+                if (inputDown)
+                {
+                    return TryShoot();
+                }
+                return false;
+
+            case WeaponShootType.AUTO:
+                if (inputHeld)
+                {
+                    return TryShoot();
+                }
+                return false;
+
+            case WeaponShootType.CHARGE:
+                if (inputHeld)
+                {
+                    TryBeginCharge();
+                }
+                if (inputUp)
+                {
+                    return TryReleaseCharge();
+                }
+                return false;
+
+            default:
+                return false;
+        }
+    }
+
+    public bool TryShoot()
+    {
+        Shoot();
+    }
+
+    public bool TryBeginCharge()
+    {
+        
+    }
+
+    public bool TryReleaseCharge()
+    {
+        
+    }   
+
     public void Shoot()
     {
-        if (CurAmmo != 0 && AmmoCount != 0  )
-        {
-            timer = 0f;
-            gunAudio.Play();
-            gunLight.enabled = true;
-            gunParticles.Stop();
-            gunParticles.Play();
-            gunLine.enabled = true;
-            gunLine.SetPosition(0, transform.position);
-            shootRay.origin = transform.position;
-            shootRay.direction = transform.forward;
-            CurAmmo -= 1;
-                       
-            if (Physics.Raycast(shootRay, out shootHit, range, shootableMask))
+
+        if (CurAmmo != 0 && AmmoCount != 0 && LastShot + delayBetweenShots < Time.time)
+         {
+
+
+            for (int i = 0; i < BulletsPerShot; i++)
             {
-
-                DamageSystem Dsystem = shootHit.collider.GetComponent<DamageSystem>();
-
-                if (Dsystem != null)
-                {
-
-                    Dsystem.TakeDamage(damagePerShot, shootHit.point);
-                }
-                gunLine.SetPosition(1, shootHit.point);
+                Vector3 shotDirection = ProjectileSpawn.position;
+                Instantiate(Projectile, ProjectileSpawn.position, Quaternion.LookRotation(shotDirection));
             }
-            else
+
+          
+            LastShot = Time.time;
+
+           
+            if (ShootSound)
             {
-                gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
+                gunAudio.PlayOneShot(ShootSound);
             }
+
+
+
+
+
+            /* timer = 0f;
+             gunAudio.Play();
+             gunLight.enabled = true;
+             gunParticles.Stop();
+             gunParticles.Play();
+             gunLine.enabled = true;
+             gunLine.SetPosition(0, transform.position);
+             shootRay.origin = transform.position;
+             shootRay.direction = transform.forward;
+             CurAmmo -= 1;
+
+             if (Physics.Raycast(shootRay, out shootHit, range, shootableMask))
+             {
+
+                 DamageSystem Dsystem = shootHit.collider.GetComponent<DamageSystem>();
+
+                 if (Dsystem != null)
+                 {
+
+                     Dsystem.TakeDamage(damagePerShot, shootHit.point);
+                 }
+                 gunLine.SetPosition(1, shootHit.point);
+             }
+             else
+             {
+                 gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
+             }*/
+
 
         }
     }
+
+        
+    
     public void Aiming()
     {
-        Aiming cum = GetComponentInParent<Aiming>();
-        cum.Aim(AIMPower, ASpeed);
+        
     }
 
     public void  Notaiming()
     {
-        Aiming cum = GetComponentInParent<Aiming>();
-        cum.Notaim(AIMPower, UnASpeed);
+       
     }
 
         public void Reload()
