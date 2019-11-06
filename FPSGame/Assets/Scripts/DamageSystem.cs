@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class DamageSystem : MonoBehaviour
 {
     // взял за основу гайд с юнитидокс...   ...или не снего...   ...точно не помню
-
+    public string SceneName;
     public Text Hp;
     public Text MaxHp;
     public float MaxHealth;                      //макс хп 
@@ -26,6 +26,7 @@ public class DamageSystem : MonoBehaviour
     bool isDead;                        // Состояние смэрты
     bool isSinking;                     // Состояние разложения
     public GameObject Player;
+    public GameObject Character;
 
     void Awake()
     {
@@ -110,6 +111,12 @@ public class DamageSystem : MonoBehaviour
     void Death()
 
     {
+        if (Player == Character)
+        //Если здох наш перс отправляемя на экран проигрыша
+        {
+            SceneManager.LoadScene(SceneName);
+        }
+      
         //Обьявляем состояние смэрты
         isDead = true;
 
@@ -122,13 +129,8 @@ public class DamageSystem : MonoBehaviour
         // Меняем звук получения дамага на звук смэрты
         Audio.clip = deathClip;
         Audio.Play();
-
-     //   if (Player)
-        //Если здох наш перс отправляемя на экран проигрыша
-      //  {
-          ////  SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-      //  }
         StartSinking();
+      
     }
 
     public void StartSinking()
