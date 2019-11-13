@@ -25,7 +25,7 @@ public class PickingUpWeapon : MonoBehaviour
             GameObject Ytem = hit.collider.gameObject;
 
             Item ii = Ytem.GetComponent<Item>();
-            Rigidbody Rbg = Ytem.GetComponent<Rigidbody>();
+           // Rigidbody Rbg = Ytem.GetComponent<Rigidbody>();
 
 
             if (ii != null)

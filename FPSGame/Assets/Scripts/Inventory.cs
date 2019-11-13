@@ -67,7 +67,11 @@ public class Inventory : MonoBehaviour
 
     public void Add(GameObject Ytem)
     {
+        
         Item item = Ytem.GetComponent<Item>();
+        if (item == null)
+            return;
+           
         items.Add(item);
 
     }

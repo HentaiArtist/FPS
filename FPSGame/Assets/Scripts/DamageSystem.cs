@@ -49,10 +49,10 @@ public class DamageSystem : MonoBehaviour
             // Если наш моб начал разлогаться то он начинает опускаться вниз
             transform.Translate(-Vector3.up * sinkSpeed * Time.deltaTime);
         }
-      //  if () {
+        if (Player) {
             Hp.text = CurHealth.ToString();
             MaxHp.text = MaxHealth.ToString();
-       // }
+        }
     }
 
 

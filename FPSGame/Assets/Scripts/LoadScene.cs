@@ -12,4 +12,9 @@ public class LoadScene : MonoBehaviour
 
 
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Load();
+    }
 }

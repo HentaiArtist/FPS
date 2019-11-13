@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour
 {
-  
+    
     public KeyCode ReloadKey;
     public KeyCode ItemChangeKey;
     public KeyCode PickItemKey;
@@ -22,6 +22,7 @@ public class Controller : MonoBehaviour
         Sht = GetComponent<Shooting>();
         Dsystem = GetComponent<DamageSystem>();
         inventory = GetComponent<Inventory>();
+        
     
     }
 
