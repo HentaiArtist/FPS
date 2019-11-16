@@ -10,30 +10,27 @@ public enum WeaponShootType
 }
 
 public class Shooting : MonoBehaviour
+
 {
+    public float AmmoNeededToStartCharge;
+    public bool IsCharge;
     public float LastShot;
     public GameObject Projectile;
     public int BulletsPerShot;
     public WeaponShootType shootType;
-    public GameObject projectile;          
+    public float currentCharge { get; private set; }
     public GameObject Gun;
-    public int damagePerShot;
     public float RayLifeTime;
-    public float range;
     float timer;
-    Ray shootRay;
-    RaycastHit shootHit;
-    int shootableMask;
     ParticleSystem gunParticles;
-    LineRenderer gunLine;
     AudioSource gunAudio;
     Light gunLight;
     float effectsDisplayTime = 0.2f;
     public AudioClip ShootSound;
     public AudioClip ReloadSound;
-    public int AmmoCount;
-    public int CurAmmo;
-    public int Clip;
+    public float AmmoCount;
+    public float CurAmmo;
+    public float Clip;
     public Text Ammotext;
     public Text AmmoCounttext;
     public Transform Gunslot;
@@ -44,9 +41,9 @@ public class Shooting : MonoBehaviour
     void Awake()
     {
 
-        shootableMask = LayerMask.GetMask("Shootable");
+
         gunParticles = GetComponent<ParticleSystem>();
-        gunLine = GetComponent<LineRenderer>();
+
         gunAudio = GetComponent<AudioSource>();
         gunLight = GetComponent<Light>();
         AmmoCount = MaxAmmo;
@@ -56,33 +53,25 @@ public class Shooting : MonoBehaviour
     void Update()
     {
 
-      //  if ( ) {
-            Ammotext.text = CurAmmo.ToString();
-            AmmoCounttext.text = AmmoCount.ToString();
-          //     }
-      //  timer += Time.deltaTime;
-        //if (Input.GetKeyDown(ReloadKey) && AmmoCount != 0 )
-        //{
-        // Reload();
-        // }
-        //if (Input.GetMouseButtonDown(0) && && AmmoCount!= 0 && CurAmmo != 0 && Gun.transform.position == Gunslot.transform.position)
-        //  {
-        // Shoot();
-        // }
+        // if (transform.position == Gunslot ) {
+        Ammotext.text = CurAmmo.ToString();
+        AmmoCounttext.text = AmmoCount.ToString();
+        //    }
+
 
         if (timer >= RayLifeTime * effectsDisplayTime)
         {
             DisableEffects();
         }
     }
-    
-    
-       
+
+
+
 
 
     public void DisableEffects()
     {
-        gunLine.enabled = false;
+
         gunLight.enabled = false;
     }
 
@@ -122,100 +111,74 @@ public class Shooting : MonoBehaviour
 
     public bool TryShoot()
     {
-        Shoot();
+        if (CurAmmo != 0 && AmmoCount != 0 && LastShot + delayBetweenShots < Time.time)
+        {
+            Shoot();
+            return true;
+        }
+        return false;
+    }
+
+    public void UseAmmo(float amount)
+    {
+        CurAmmo = Mathf.Clamp(CurAmmo - amount, 0f, Clip);
+        LastShot = Time.time;
     }
 
     public bool TryBeginCharge()
     {
-        
-    }
+        if (!IsCharge && CurAmmo >= AmmoNeededToStartCharge && LastShot + delayBetweenShots < Time.time)
+        {
+            UseAmmo(AmmoNeededToStartCharge);
+            IsCharge = true;
 
+            return true;
+
+        }
+        return false;
+    }
     public bool TryReleaseCharge()
     {
-        
-    }   
+        if (IsCharge)
+        {
+            Shoot();
+
+            currentCharge = 0f;
+            IsCharge = false;
+
+            return true;
+        }
+        return false;
+    }
 
     public void Shoot()
     {
 
-        if (CurAmmo != 0 && AmmoCount != 0 && LastShot + delayBetweenShots < Time.time)
-         {
+        for (int i = 0; i < BulletsPerShot; i++)
+        {
+            Vector3 shotDirection = ProjectileSpawn.position;
+            Instantiate(Projectile, ProjectileSpawn.position, Quaternion.LookRotation(shotDirection));
+        }
 
 
-            for (int i = 0; i < BulletsPerShot; i++)
-            {
-                Vector3 shotDirection = ProjectileSpawn.position;
-                Instantiate(Projectile, ProjectileSpawn.position, Quaternion.LookRotation(shotDirection));
-            }
-
-          
-            LastShot = Time.time;
-
-           
-            if (ShootSound)
-            {
-                gunAudio.PlayOneShot(ShootSound);
-            }
+        LastShot = Time.time;
 
 
-
-
-
-            /* timer = 0f;
-             gunAudio.Play();
-             gunLight.enabled = true;
-             gunParticles.Stop();
-             gunParticles.Play();
-             gunLine.enabled = true;
-             gunLine.SetPosition(0, transform.position);
-             shootRay.origin = transform.position;
-             shootRay.direction = transform.forward;
-             CurAmmo -= 1;
-
-             if (Physics.Raycast(shootRay, out shootHit, range, shootableMask))
-             {
-
-                 DamageSystem Dsystem = shootHit.collider.GetComponent<DamageSystem>();
-
-                 if (Dsystem != null)
-                 {
-
-                     Dsystem.TakeDamage(damagePerShot, shootHit.point);
-                 }
-                 gunLine.SetPosition(1, shootHit.point);
-             }
-             else
-             {
-                 gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
-             }*/
-
-
+        if (ShootSound)
+        {
+            gunAudio.PlayOneShot(ShootSound);
         }
     }
 
-        
-    
-    public void Aiming()
-    {
-        
-    }
-
-    public void  Notaiming()
-    {
-       
-    }
-
-        public void Reload()
+    public void Reload()
     {
         if (CurAmmo != Clip && AmmoCount > 0)
         {
             AmmoCount -= Clip;
             CurAmmo = Clip;
         }
-        
-           // Ammotext.text = CurAmmo.ToString();
-         //  AmmoCounttext.text = AmmoCount.ToString();
-        
+
+
 
     }
 
@@ -227,10 +190,10 @@ public class Shooting : MonoBehaviour
         }
         else return;
     }
-
+}
     
 
-}
+
     
  
    

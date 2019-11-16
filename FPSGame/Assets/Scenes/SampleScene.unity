@@ -298,7 +298,9 @@ MonoBehaviour:
   MaxHealth: 1000
   CurHealth: 0
   sinkSpeed: 2.5
+  scoreValue: 10
   deathClip: {fileID: 0}
+  score: 0
   Player: {fileID: 0}
 --- !u!114 &672011935
 MonoBehaviour:
@@ -1510,10 +1512,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 989380ece890ba240ae916015c03ae51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AmmoNeededToStartCharge: 0
+  IsCharge: 0
+  LastShot: 0
+  Projectile: {fileID: 0}
+  BulletsPerShot: 0
+  shootType: 2
   Gun: {fileID: 1737722787}
-  damagePerShot: 30
   RayLifeTime: 0.5
-  range: 100
+  ShootSound: {fileID: 0}
   ReloadSound: {fileID: 0}
   AmmoCount: 200
   CurAmmo: 8
@@ -1521,10 +1528,9 @@ MonoBehaviour:
   Ammotext: {fileID: 1198623947}
   AmmoCounttext: {fileID: 1176758667}
   Gunslot: {fileID: 1536238520}
-  AIMPower: 30
+  ProjectileSpawn: {fileID: 0}
   MaxAmmo: 200
-  ASpeed: 0.1
-  UnASpeed: 0.5
+  delayBetweenShots: 0
 --- !u!4 &1737722794 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 474268, guid: 4d3954090301230418284fcfa57f5332,
@@ -6546,7 +6552,9 @@ MonoBehaviour:
   MaxHealth: 100
   CurHealth: 0
   sinkSpeed: 2.5
+  scoreValue: 10
   deathClip: {fileID: 0}
+  score: 0
   Player: {fileID: 0}
 --- !u!114 &1810960325
 MonoBehaviour:

@@ -47,7 +47,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void Aim()
+ /*   public void Aim()
     {
         if(items[CurrentItemIndex].tag == "Gun")
         {
@@ -64,7 +64,7 @@ public class Inventory : MonoBehaviour
             sht.Notaiming();
         }
     }
-
+    */
     public void Add(GameObject Ytem)
     {
         Item item = Ytem.GetComponent<Item>();

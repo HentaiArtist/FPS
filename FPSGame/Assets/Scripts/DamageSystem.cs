@@ -14,10 +14,10 @@ public class DamageSystem : MonoBehaviour
     public float MaxHealth;                      //макс хп 
     public float CurHealth;                      //текущее хп 
     public float sinkSpeed = 2.5f;              // Скорость разложения.Первая фича с юньки , когда наш моб повержен , его труп тип удет под землю 
-    // public int scoreValue = 10;             // тут еще система набирания очков имееться но пока она нам не нужна    
+    public int scoreValue = 10;             // тут еще система набирания очков имееться но пока она нам не нужна    
     public AudioClip deathClip;               // Звук смэрты.
 
-    //  public float score;     
+      public float score;     
 
     Animator Anim;                          // аниматор 
     AudioSource Audio;                      // Аудио 
@@ -48,14 +48,11 @@ public class DamageSystem : MonoBehaviour
             // Если наш моб начал разлогаться то он начинает опускаться вниз
             transform.Translate(-Vector3.up * sinkSpeed * Time.deltaTime);
         }
-      //  if () {
-            Hp.text = CurHealth.ToString();
-            MaxHp.text = MaxHealth.ToString();
-       // }
+      
     }
 
 
-   public void TakeDamage(float damage, Vector3 hitPoint)
+   public void TakeDamage(float damage /*Vector3 hitPoint*/)
     {
 
         if (isDead)
@@ -69,7 +66,7 @@ public class DamageSystem : MonoBehaviour
         CurHealth -= damage;
 
         //показываем в каком месте должен появиться партикл (тип кровушкой брызнуть , или искрами жухнуть)
-        hitParticles.transform.position = hitPoint;
+       // hitParticles.transform.position = hitPoint;
 
         // и собственно играем партикл
         hitParticles.Play();
@@ -143,7 +140,7 @@ public class DamageSystem : MonoBehaviour
         isSinking = true;
 
         //Тут идет начисление очков 
-        //score += scoreValue;
+        score += scoreValue;
 
         //Дестроим моба чтобы потом и за большого количества труаов не было траблов с оптимизвцией
         Destroy(gameObject, 2f);
