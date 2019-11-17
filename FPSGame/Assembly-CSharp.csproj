@@ -62,6 +62,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\LightningBolt\LightningBoltScript.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\MenuSceneLoader.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\PauseMenu.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\SceneAndURLLoader.cs" />
@@ -73,13 +74,20 @@
     <Compile Include="Assets\Scripts\ContactDamage.cs" />
     <Compile Include="Assets\Scripts\Controller.cs" />
     <Compile Include="Assets\Scripts\DamageSystem.cs" />
+    <Compile Include="Assets\Scripts\DoorMovement.cs" />
+    <Compile Include="Assets\Scripts\DoorTrigger.cs" />
     <Compile Include="Assets\Scripts\Inventory.cs" />
     <Compile Include="Assets\Scripts\Item.cs" />
+    <Compile Include="Assets\Scripts\Jumboost.cs" />
+    <Compile Include="Assets\Scripts\LoadScene.cs" />
+    <Compile Include="Assets\Scripts\NPCSpawnn.cs" />
     <Compile Include="Assets\Scripts\JumpBoost.cs" />
     <Compile Include="Assets\Scripts\Patrol.cs" />
     <Compile Include="Assets\Scripts\PickingUpWeapon.cs" />
     <Compile Include="Assets\Scripts\PickUps.cs" />
     <Compile Include="Assets\Scripts\Shooting.cs" />
+    <Compile Include="Assets\Scripts\TriggerSpawn.cs" />
+    <None Include="Assets\LightningBolt\Readme.txt" />
     <Compile Include="Assets\Scripts\StandartProjectile.cs" />
     <None Include="Assets\SampleScenes\Shaders\Skybox-Procedural.shader" />
     <Reference Include="Unity.Timeline.Editor">

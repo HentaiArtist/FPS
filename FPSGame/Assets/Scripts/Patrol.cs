@@ -42,12 +42,15 @@ public class Patrol : MonoBehaviour {
     {
        
         agent = GetComponent<NavMeshAgent>();
-      
+
         anim = GetComponent<Animator> ();
     }
 
     bool DoesSeePlayer()
     {
+        if (agent == null)
+            return false;
+
 		Vector3 directionToPlayer = Player.transform.position - transform.position;
 		//Debug.Log (directionToPlayer.magnitude);
 		//Debug.Log (Vector3.SqrMagnitude(directionToPlayer));

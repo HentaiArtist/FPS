@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Gun
+  - Hp
+  - Ammo
   layers:
   - Default
   - TransparentFX

@@ -24,7 +24,8 @@ public class Controller : MonoBehaviour
         Sht = GetComponent<Shooting>();
         Dsystem = GetComponent<DamageSystem>();
         inventory = GetComponent<Inventory>();
-
+        
+    
     }
 
 
