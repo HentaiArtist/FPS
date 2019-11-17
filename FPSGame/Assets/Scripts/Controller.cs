@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour
 {
-
+    public KeyCode JumpButton;
     public KeyCode ReloadKey;
     public KeyCode ItemChangeKey;
     public KeyCode PickItemKey;
@@ -14,10 +14,12 @@ public class Controller : MonoBehaviour
     PickingUpWeapon handsscript;
     Shooting Sht;
     DamageSystem Dsystem;
+    JumpBoost Jump;
 
     private void Awake()
     {
         // itemscript = GetComponent<Item>();
+        Jump = GetComponent<JumpBoost>();
         handsscript = GetComponent<PickingUpWeapon>();
         Sht = GetComponent<Shooting>();
         Dsystem = GetComponent<DamageSystem>();
@@ -40,10 +42,18 @@ public class Controller : MonoBehaviour
 
 
         }
-
+        if (Input.GetKeyDown(JumpButton))
+        {
+            Jump.Jumpo();
+        }
         if (Input.GetMouseButtonDown(0))
         {
             inventory.Use();
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            inventory.Enduse();
         }
 
         if (Input.GetKeyDown(ReloadKey))

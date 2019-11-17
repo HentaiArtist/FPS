@@ -10,8 +10,15 @@ public enum WeaponShootType
 }
 
 public class Shooting : MonoBehaviour
+    
+
 
 {
+    public bool IsShooted;
+    public bool isfiring;
+    public bool isCharging;
+    public float ChargeDuration;
+    public float AmmoUsedInCharge;
     public float AmmoNeededToStartCharge;
     public bool IsCharge;
     public float LastShot;
@@ -37,78 +44,61 @@ public class Shooting : MonoBehaviour
     public Transform ProjectileSpawn;
     public int MaxAmmo;
     public float delayBetweenShots;
+    public float BulletSpeed;
 
-    void Awake()
-    {
+ 
+void Awake()
+{
 
 
-        gunParticles = GetComponent<ParticleSystem>();
+    gunParticles = GetComponent<ParticleSystem>();
 
-        gunAudio = GetComponent<AudioSource>();
-        gunLight = GetComponent<Light>();
-        AmmoCount = MaxAmmo;
+    gunAudio = GetComponent<AudioSource>();
+    gunLight = GetComponent<Light>();
+    AmmoCount = MaxAmmo;
+}
 
-    }
 
     void Update()
     {
 
-        // if (transform.position == Gunslot ) {
-        Ammotext.text = CurAmmo.ToString();
-        AmmoCounttext.text = AmmoCount.ToString();
-        //    }
-
-
-        if (timer >= RayLifeTime * effectsDisplayTime)
+        switch (shootType)
         {
-            DisableEffects();
+            case WeaponShootType.MANUAL:    break  ;
+                  
+            
+                
+
+            case WeaponShootType.AUTO:
+                if (isfiring)
+                {
+                    LastShot = Time.deltaTime;
+                    if (LastShot > delayBetweenShots)
+                    {
+                        TryShoot();
+
+                    }
+                }
+                break;
+                
+                
+            case WeaponShootType.CHARGE:
+
+                ChargeDuration += Time.deltaTime;
+                break;
+
         }
     }
-
-
-
-
-
-    public void DisableEffects()
+    
+       
+   public void DisableEffects()
     {
 
         gunLight.enabled = false;
     }
 
-    public bool ShootInputType(bool inputDown, bool inputHeld, bool inputUp)
-    {
-        switch (shootType)
-        {
-            case WeaponShootType.MANUAL:
-                if (inputDown)
-                {
-                    return TryShoot();
-                }
-                return false;
-
-            case WeaponShootType.AUTO:
-                if (inputHeld)
-                {
-                    return TryShoot();
-                }
-                return false;
-
-            case WeaponShootType.CHARGE:
-                if (inputHeld)
-                {
-                    TryBeginCharge();
-                }
-                if (inputUp)
-                {
-                    return TryReleaseCharge();
-                }
-                return false;
-
-            default:
-                return false;
-        }
-    }
-
+  
+   
     public bool TryShoot()
     {
         if (CurAmmo != 0 && AmmoCount != 0 && LastShot + delayBetweenShots < Time.time)
@@ -155,9 +145,11 @@ public class Shooting : MonoBehaviour
     {
 
         for (int i = 0; i < BulletsPerShot; i++)
-        {
-            Vector3 shotDirection = ProjectileSpawn.position;
-            Instantiate(Projectile, ProjectileSpawn.position, Quaternion.LookRotation(shotDirection));
+        { Camera Cum = GetComponentInChildren<Camera>();
+            
+            GameObject go =  Instantiate(Projectile, ProjectileSpawn.position, Quaternion.identity);
+            Rigidbody rb = go.GetComponent<Rigidbody>();
+            rb.velocity = Camera.main.transform.forward * BulletSpeed;
         }
 
 

@@ -5,37 +5,24 @@ using UnityEngine;
 public class StandartProjectile : MonoBehaviour
 
 {
-     Vector3  Velocity;
+    public Vector3 Velocity;
     public float BulletDamage;
-    public GameObject range;
-  
-
-
-    public void OnCollisionEnter(Collision collision )
-    {   
-        GameObject coll = collision.gameObject;
-        DamageSystem dsystem = coll.GetComponent<DamageSystem>();
-        Shooting sht = GetComponentInParent<Shooting>();
-
-        if (coll.tag == "Enemy" && dsystem != null)
+    private void OnTriggerEnter(Collider other)
+    {
+        GameObject coll = other.gameObject;
+        GameObject gg = GetComponent<GameObject>();
+        if (coll.tag == "Enemy" && gg.tag != "bullet")
         {
-            dsystem.TakeDamage(BulletDamage);
-        }
-        else
-        {
-            
-            GameObject gg = GetComponent<GameObject>();
-            Destroy(gg);
+            DamageSystem dsystem = coll.GetComponent<DamageSystem>();
+            Shooting sht = GetComponentInParent<Shooting>();
+
+            if (coll.tag == "Enemy" && dsystem != null)
+            {
+                dsystem.TakeDamage(BulletDamage);
+
+                Destroy(gg);
+            }
             return;
         }
     }
-
-
-    private void Update()
-    {
-        
-        transform.position += Velocity * Time.deltaTime;
-
-    }
-
 }

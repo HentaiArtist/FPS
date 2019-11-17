@@ -34,8 +34,18 @@ public class Inventory : MonoBehaviour
         if (items[CurrentItemIndex].tag == "Gun")
         {
             Shooting sht = items[CurrentItemIndex].GetComponent<Shooting>();
-            sht.Shoot();
+            sht.ChargeDuration = 0;
+            sht.isfiring = true;
+           
+            sht.TryShoot();
+
         }
+    }
+
+    public void Enduse()
+    {
+        Shooting sht = items[CurrentItemIndex].GetComponent<Shooting>();
+        sht.isfiring = false;
     }
 
     public void Reload()

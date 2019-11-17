@@ -75,6 +75,7 @@
     <Compile Include="Assets\Scripts\DamageSystem.cs" />
     <Compile Include="Assets\Scripts\Inventory.cs" />
     <Compile Include="Assets\Scripts\Item.cs" />
+    <Compile Include="Assets\Scripts\JumpBoost.cs" />
     <Compile Include="Assets\Scripts\Patrol.cs" />
     <Compile Include="Assets\Scripts\PickingUpWeapon.cs" />
     <Compile Include="Assets\Scripts\PickUps.cs" />
