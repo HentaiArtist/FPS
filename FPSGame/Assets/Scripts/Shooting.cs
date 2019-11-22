@@ -9,32 +9,44 @@ public enum WeaponShootType
     MANUAL
 }
 
-public class Shooting : MonoBehaviour
+public class Shooting : MonoBehaviour { 
+         
+    
+    public float SpreadX;
+  
+
+
+    public float SpreadY;
     
 
+    public float SpreadZ;
+  
 
-{
-    public bool IsShooted;
+    public float AimPower;
     public bool isfiring;
     public bool isCharging;
     public float ChargeDuration;
     public float AmmoUsedInCharge;
     public float AmmoNeededToStartCharge;
     public bool IsCharge;
+
     public float LastShot;
     public GameObject Projectile;
     public int BulletsPerShot;
     public WeaponShootType shootType;
     public float currentCharge { get; private set; }
+
     public GameObject Gun;
-    public float RayLifeTime;
+   
     float timer;
+
     ParticleSystem gunParticles;
     AudioSource gunAudio;
     Light gunLight;
     float effectsDisplayTime = 0.2f;
     public AudioClip ShootSound;
     public AudioClip ReloadSound;
+
     public float AmmoCount;
     public float CurAmmo;
     public float Clip;
@@ -57,37 +69,33 @@ void Awake()
     gunLight = GetComponent<Light>();
     AmmoCount = MaxAmmo;
 }
-
-
+  
     void Update()
     {
-
         switch (shootType)
         {
             case WeaponShootType.MANUAL:    break  ;
-                  
-            
-                
-
+             
             case WeaponShootType.AUTO:
                 if (isfiring)
                 {
-                    LastShot = Time.deltaTime;
+                    LastShot += Time.deltaTime;
                     if (LastShot > delayBetweenShots)
                     {
                         TryShoot();
-
                     }
                 }
                 break;
                 
                 
             case WeaponShootType.CHARGE:
-
                 ChargeDuration += Time.deltaTime;
                 break;
 
         }
+
+        Ammotext.text = CurAmmo.ToString();
+        AmmoCounttext.text = AmmoCount.ToString();
     }
     
        
@@ -115,46 +123,27 @@ void Awake()
         LastShot = Time.time;
     }
 
-    public bool TryBeginCharge()
-    {
-        if (!IsCharge && CurAmmo >= AmmoNeededToStartCharge && LastShot + delayBetweenShots < Time.time)
-        {
-            UseAmmo(AmmoNeededToStartCharge);
-            IsCharge = true;
-
-            return true;
-
-        }
-        return false;
-    }
-    public bool TryReleaseCharge()
-    {
-        if (IsCharge)
-        {
-            Shoot();
-
-            currentCharge = 0f;
-            IsCharge = false;
-
-            return true;
-        }
-        return false;
-    }
+    
+ 
 
     public void Shoot()
     {
-
+         CurAmmo -= 1; 
         for (int i = 0; i < BulletsPerShot; i++)
-        { Camera Cum = GetComponentInChildren<Camera>();
-            
-            GameObject go =  Instantiate(Projectile, ProjectileSpawn.position, Quaternion.identity);
+        {
+            //Camera Cum = GetComponentInChildren<Camera>();
+
+         //    ProjectileSpawn.transform.position = new Vector3(Random.Range(-SpreadX , SpreadX ), Random.Range(-SpreadY, SpreadY), Random.Range(-SpreadZ, SpreadZ) );
+
+
+            Quaternion BulletLook = Camera.main.transform.rotation;
+            GameObject go =  Instantiate(Projectile, ProjectileSpawn.position, BulletLook );
             Rigidbody rb = go.GetComponent<Rigidbody>();
             rb.velocity = Camera.main.transform.forward * BulletSpeed;
+           
         }
-
-
-        LastShot = Time.time;
-
+        
+        LastShot = 0;
 
         if (ShootSound)
         {
@@ -182,6 +171,46 @@ void Awake()
         }
         else return;
     }
+
+    public void Use()
+    {
+        switch (shootType)
+        {
+            case WeaponShootType.AUTO:
+                isfiring = true;
+                break;
+
+            case WeaponShootType.CHARGE:
+                ChargeDuration = 0;
+                break;
+
+            case WeaponShootType.MANUAL:
+                TryShoot();
+                break;
+        }
+
+    }
+
+    public void Enduse()
+    {
+        switch (shootType)
+        {
+            case WeaponShootType.AUTO:
+                isfiring = false;
+                break;
+
+            case WeaponShootType.CHARGE:
+                // TODO: Shoot charges
+                ChargeDuration = 0;
+                break;
+
+            case WeaponShootType.MANUAL:
+                break;
+        }
+
+    }
+
+ 
 }
     
 

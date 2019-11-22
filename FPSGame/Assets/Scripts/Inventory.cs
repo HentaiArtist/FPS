@@ -34,18 +34,17 @@ public class Inventory : MonoBehaviour
         if (items[CurrentItemIndex].tag == "Gun")
         {
             Shooting sht = items[CurrentItemIndex].GetComponent<Shooting>();
-            sht.ChargeDuration = 0;
-            sht.isfiring = true;
-           
-            sht.TryShoot();
-
+            sht.Use();
         }
     }
 
     public void Enduse()
     {
-        Shooting sht = items[CurrentItemIndex].GetComponent<Shooting>();
-        sht.isfiring = false;
+        if (items[CurrentItemIndex].tag == "Gun")
+        {
+            Shooting sht = items[CurrentItemIndex].GetComponent<Shooting>();
+            sht.Enduse();
+        }
     }
 
     public void Reload()
