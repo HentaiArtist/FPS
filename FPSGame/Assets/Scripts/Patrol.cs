@@ -54,7 +54,7 @@ public class Patrol : MonoBehaviour {
 		Vector3 directionToPlayer = Player.transform.position - transform.position;
 		//Debug.Log (directionToPlayer.magnitude);
 		//Debug.Log (Vector3.SqrMagnitude(directionToPlayer));
-		Debug.Log(Vector3.Dot(transform.forward, directionToPlayer.normalized));
+		//Debug.Log(Vector3.Dot(transform.forward, directionToPlayer.normalized));
         return Vector3.SqrMagnitude(directionToPlayer) < dist * dist
 			&& Vector3.Dot(transform.forward, directionToPlayer.normalized) > Mathf.Cos(MobFOV);
     }

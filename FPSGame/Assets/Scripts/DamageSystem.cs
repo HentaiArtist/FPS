@@ -26,7 +26,7 @@ public class DamageSystem : MonoBehaviour
     bool isDead;                        // Состояние смэрты
     bool isSinking;                     // Состояние разложения
     public GameObject Player;
-    public GameObject Character;
+    
 
     void Awake()
     {
@@ -35,7 +35,7 @@ public class DamageSystem : MonoBehaviour
         Audio = GetComponent<AudioSource>();
         hitParticles = GetComponentInChildren<ParticleSystem>();
         capsuleCollider = GetComponent<CapsuleCollider>();
-
+        
         // Делаем со старта всем фулл хп , и обьявлеям кто тут батька 
         CurHealth = MaxHealth;
        
@@ -49,10 +49,13 @@ public class DamageSystem : MonoBehaviour
             // Если наш моб начал разлогаться то он начинает опускаться вниз
             transform.Translate(-Vector3.up * sinkSpeed * Time.deltaTime);
         }
-        if (Player) {
+
+        if (Player) { 
+
             Hp.text = CurHealth.ToString();
             MaxHp.text = MaxHealth.ToString();
         }
+        
     }
 
 
@@ -111,7 +114,7 @@ public class DamageSystem : MonoBehaviour
     void Death()
 
     {
-        if (Player == Character)
+        if (Player)
         //Если здох наш перс отправляемя на экран проигрыша
         {
             SceneManager.LoadScene(SceneName);

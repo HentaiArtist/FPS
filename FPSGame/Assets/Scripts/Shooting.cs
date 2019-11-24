@@ -9,18 +9,11 @@ public enum WeaponShootType
     MANUAL
 }
 
-public class Shooting : MonoBehaviour { 
-         
-    
-    public float SpreadX;
-  
+public class Shooting : MonoBehaviour
+{
 
 
-    public float SpreadY;
-    
 
-    public float SpreadZ;
-  
 
     public float AimPower;
     public bool isfiring;
@@ -37,7 +30,7 @@ public class Shooting : MonoBehaviour {
     public float currentCharge { get; private set; }
 
     public GameObject Gun;
-   
+
     float timer;
 
     ParticleSystem gunParticles;
@@ -57,25 +50,28 @@ public class Shooting : MonoBehaviour {
     public int MaxAmmo;
     public float delayBetweenShots;
     public float BulletSpeed;
+    public float ReloadSpeed;
+   
+    public float SpreadAngle;
+    
+    void Awake()
+    {
 
- 
-void Awake()
-{
 
+        gunParticles = GetComponent<ParticleSystem>();
 
-    gunParticles = GetComponent<ParticleSystem>();
+        gunAudio = GetComponent<AudioSource>();
+        gunLight = GetComponent<Light>();
+        CurAmmo = Clip;
+        AmmoCount = MaxAmmo;
+    }
 
-    gunAudio = GetComponent<AudioSource>();
-    gunLight = GetComponent<Light>();
-    AmmoCount = MaxAmmo;
-}
-  
     void Update()
     {
         switch (shootType)
         {
-            case WeaponShootType.MANUAL:    break  ;
-             
+            case WeaponShootType.MANUAL: break;
+
             case WeaponShootType.AUTO:
                 if (isfiring)
                 {
@@ -86,30 +82,31 @@ void Awake()
                     }
                 }
                 break;
-                
-                
+
+
             case WeaponShootType.CHARGE:
                 ChargeDuration += Time.deltaTime;
                 break;
 
         }
-
-        Ammotext.text = CurAmmo.ToString();
-        AmmoCounttext.text = AmmoCount.ToString();
+        if (transform.position == Gunslot.position) {
+            Ammotext.text = CurAmmo.ToString();
+            AmmoCounttext.text = AmmoCount.ToString();
+        }
     }
-    
-       
-   public void DisableEffects()
+
+
+    public void DisableEffects()
     {
 
         gunLight.enabled = false;
     }
 
-  
-   
+
+
     public bool TryShoot()
     {
-        if (CurAmmo != 0 && AmmoCount != 0 && LastShot + delayBetweenShots < Time.time)
+        if (CurAmmo != 0  &&   Time.time > LastShot + delayBetweenShots)
         {
             Shoot();
             return true;
@@ -117,33 +114,36 @@ void Awake()
         return false;
     }
 
-    public void UseAmmo(float amount)
-    {
-        CurAmmo = Mathf.Clamp(CurAmmo - amount, 0f, Clip);
-        LastShot = Time.time;
-    }
-
-    
  
+    public Vector3 GetFirigDirection()
+    {
+        float Spread = Random.Range(0, SpreadAngle);
+        Vector3 dir =  (Camera.main.transform.forward);
+        print(dir);
+        dir = Quaternion.AngleAxis(Spread, Camera.main.transform.right) * dir;
+        print(dir);
+        dir = Quaternion.AngleAxis(Random.Range(0, 360), Camera.main.transform.forward) * dir;
+        print(dir);
+        return dir;
+    }
 
     public void Shoot()
     {
-         CurAmmo -= 1; 
+        CurAmmo -= 1;
         for (int i = 0; i < BulletsPerShot; i++)
         {
             //Camera Cum = GetComponentInChildren<Camera>();
 
-         //    ProjectileSpawn.transform.position = new Vector3(Random.Range(-SpreadX , SpreadX ), Random.Range(-SpreadY, SpreadY), Random.Range(-SpreadZ, SpreadZ) );
+            //    ProjectileSpawn.transform.position = new Vector3(Random.Range(-SpreadX , SpreadX ), Random.Range(-SpreadY, SpreadY), Random.Range(-SpreadZ, SpreadZ) );
 
 
-            Quaternion BulletLook = Camera.main.transform.rotation;
-            GameObject go =  Instantiate(Projectile, ProjectileSpawn.position, BulletLook );
+            Vector3 BulletLook = GetFirigDirection();
+            GameObject go = Instantiate(Projectile, ProjectileSpawn.position,Quaternion.LookRotation(BulletLook));
             Rigidbody rb = go.GetComponent<Rigidbody>();
-            rb.velocity = Camera.main.transform.forward * BulletSpeed;
-           
+            rb.velocity = BulletLook * BulletSpeed;
         }
-        
-        LastShot = 0;
+
+        LastShot = Time.time;
 
         if (ShootSound)
         {
@@ -153,10 +153,11 @@ void Awake()
 
     public void Reload()
     {
-        if (CurAmmo != Clip && AmmoCount > 0)
+        if (CurAmmo != Clip && AmmoCount > 0 && Time.time > Time.time+ReloadSpeed)
         {
             AmmoCount -= Clip;
             CurAmmo = Clip;
+            ReloadSpeed = Time.time;
         }
 
 
@@ -209,16 +210,5 @@ void Awake()
         }
 
     }
-
- 
 }
-    
-
-
-    
- 
-   
-
-		
-	
 
