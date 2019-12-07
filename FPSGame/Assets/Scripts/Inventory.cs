@@ -36,6 +36,12 @@ public class Inventory : MonoBehaviour
             Shooting sht = items[CurrentItemIndex].GetComponent<Shooting>();
             sht.Use();
         }
+
+        if (items[CurrentItemIndex].tag == "meele")
+        {
+            Meele ml = items[CurrentItemIndex].GetComponent<Meele>();
+            ml.Atack();
+        }
     }
 
     public void Enduse()
@@ -52,7 +58,7 @@ public class Inventory : MonoBehaviour
         if (items[CurrentItemIndex].tag == "Gun")
         {
             Shooting sht = items[CurrentItemIndex].GetComponent<Shooting>();
-            sht.Reload();
+            sht.TryReload();
         }
     }
 

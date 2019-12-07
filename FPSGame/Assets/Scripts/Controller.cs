@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour
 {
+    Animator anim;
     public KeyCode JumpButton;
     public KeyCode ReloadKey;
     public KeyCode ItemChangeKey;
@@ -24,7 +25,7 @@ public class Controller : MonoBehaviour
         Sht = GetComponent<Shooting>();
         Dsystem = GetComponent<DamageSystem>();
         inventory = GetComponent<Inventory>();
-        
+        anim = GetComponent<Animator>();
     
     }
 
@@ -66,19 +67,28 @@ public class Controller : MonoBehaviour
 
         {
             inventory.ChangeItem();
+
+
+
+
         }
-    }
-}
-       /* if (Input.GetMouseButton(1) )
+
+if (Input.GetMouseButton(1) )
         {
-            inventory.Aim();
+            anim.SetBool("IsAiming", true);
+          
         }
 
         if (Input.GetMouseButtonUp(1))
         {
-            inventory.Notaim();
+            anim.SetBool("IsAiming", false);
         }
-        */
+
+
+    }
+ 
+       
+ }      
     
 
     

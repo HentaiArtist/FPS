@@ -48,6 +48,7 @@ public class DamageSystem : MonoBehaviour
         {
             // Если наш моб начал разлогаться то он начинает опускаться вниз
             transform.Translate(-Vector3.up * sinkSpeed * Time.deltaTime);
+           // Quaternion.AngleAxis(90 , Vector3.forward);
         }
 
         if (Player) { 
@@ -142,7 +143,7 @@ public class DamageSystem : MonoBehaviour
         GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
 
         // Делаем изкинематик для риджидбади
-        GetComponent<Rigidbody>().isKinematic = true;
+     //   GetComponent<Rigidbody>().isKinematic = true;
 
         // Обявьляем что время разлогаться
         isSinking = true;

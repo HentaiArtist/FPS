@@ -35,7 +35,7 @@ public class PickingUpWeapon : MonoBehaviour
                 Ytem.transform.parent = HandsSlot.transform;
                 Ytem.transform.localPosition = Vector3.zero;
                 Ytem.transform.localRotation = Quaternion.identity;
-
+             
                 return Ytem;
             }
             else

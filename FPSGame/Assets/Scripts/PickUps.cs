@@ -8,15 +8,21 @@ public class PickUps : MonoBehaviour {
     public float HealPower;
     public int Ammo;
     public GameObject PickUp;
+    public bool recovering;
 	
-	void Start () {
-     
-	}
+	
+   
+     // void Update () {
+       // switch (recovering)
+     //   {
+      //      case Start:;
+      //  }
 
-    public void OnTriggerEnter (Collider character )
-    {
-        GameObject GO = character.gameObject;
-        Dsystem = GO.GetComponent<DamageSystem>();
+
+  //  }
+   void OnTriggerEnter (Collider character )
+    {   GameObject GO = character.gameObject;
+    Dsystem = GO.GetComponent<DamageSystem>();
         Sht = GO.GetComponentInChildren<Shooting>();
 
        
@@ -33,9 +39,13 @@ public class PickUps : MonoBehaviour {
         }
 
         else return;
+   // recovering = true;
 
     }
-    void Update () {
-		
-	}
+
+  //  private void OnTriggerExit(Collider other)
+   // {
+ ////       recovering = false;
+  //  }
+  
 }

@@ -9,6 +9,8 @@ public class StandartProjectile : MonoBehaviour
     public Vector3 Velocity;
     public float BulletDamage;
     public ParticleSystem prt;
+    AudioSource Aud;
+    public AudioClip OnImpact;
     void Update()
     {
         Destroy(gameObject, maxLifeTime);
@@ -18,22 +20,22 @@ public class StandartProjectile : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     { 
         GameObject coll = other.gameObject;
+       Aud = GetComponent<AudioSource>();
 
-        if (coll.tag == "Enemy" && coll.tag != "Bullet")
+        if (coll.tag == "Enemy"  && coll.tag != "Bullet")
         {
             DamageSystem dsystem = coll.GetComponent<DamageSystem>();
-          
-
             if (coll.tag == "Enemy" && dsystem != null)
             {
                 dsystem.TakeDamage(BulletDamage);
             }
+        
+       }
 
-         
-
+       if (coll.tag != "Bullet")
+        {
+            Aud.PlayOneShot(OnImpact);
         }
-        prt = GetComponent<ParticleSystem>();
-        prt.Play();
         Destroy(gameObject , 0.1f);
      
     }

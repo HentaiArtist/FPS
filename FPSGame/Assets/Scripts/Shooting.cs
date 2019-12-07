@@ -14,7 +14,7 @@ public class Shooting : MonoBehaviour
 
 
 
-
+   // public float recoilForce;
     public float AimPower;
     public bool isfiring;
     public bool isCharging;
@@ -22,7 +22,7 @@ public class Shooting : MonoBehaviour
     public float AmmoUsedInCharge;
     public float AmmoNeededToStartCharge;
     public bool IsCharge;
-
+    public float LastReload;
     public float LastShot;
     public GameObject Projectile;
     public int BulletsPerShot;
@@ -39,7 +39,7 @@ public class Shooting : MonoBehaviour
     float effectsDisplayTime = 0.2f;
     public AudioClip ShootSound;
     public AudioClip ReloadSound;
-
+    Animator Anim;
     public float AmmoCount;
     public float CurAmmo;
     public float Clip;
@@ -59,7 +59,7 @@ public class Shooting : MonoBehaviour
 
 
         gunParticles = GetComponent<ParticleSystem>();
-
+        Anim = GetComponent<Animator>();
         gunAudio = GetComponent<AudioSource>();
         gunLight = GetComponent<Light>();
         CurAmmo = Clip;
@@ -75,11 +75,11 @@ public class Shooting : MonoBehaviour
             case WeaponShootType.AUTO:
                 if (isfiring)
                 {
-                    LastShot += Time.deltaTime;
-                    if (LastShot > delayBetweenShots)
-                    {
+                    //LastShot += Time.deltaTime;
+                  //  if (LastShot > delayBetweenShots)
+                  //  {
                         TryShoot();
-                    }
+                 //   }
                 }
                 break;
 
@@ -130,11 +130,11 @@ public class Shooting : MonoBehaviour
     public void Shoot()
     {
         CurAmmo -= 1;
+
+        Anim.Play("Shooting");
         for (int i = 0; i < BulletsPerShot; i++)
         {
             //Camera Cum = GetComponentInChildren<Camera>();
-
-            //    ProjectileSpawn.transform.position = new Vector3(Random.Range(-SpreadX , SpreadX ), Random.Range(-SpreadY, SpreadY), Random.Range(-SpreadZ, SpreadZ) );
 
 
             Vector3 BulletLook = GetFirigDirection();
@@ -150,18 +150,23 @@ public class Shooting : MonoBehaviour
             gunAudio.PlayOneShot(ShootSound);
         }
     }
-
-    public void Reload()
+    public void TryReload()
     {
-        if (CurAmmo != Clip && AmmoCount > 0 && Time.time > Time.time+ReloadSpeed)
+        if (CurAmmo != Clip && AmmoCount > 0 && Time.time > LastReload + ReloadSpeed)
+        {
+            Reload();
+        }
+
+    }
+   public void Reload() { 
+        if (CurAmmo != Clip && AmmoCount > 0 && Time.time > LastReload + ReloadSpeed)
         {
             AmmoCount -= Clip;
             CurAmmo = Clip;
-            ReloadSpeed = Time.time;
-        }
-
-
-
+           
+       }  
+           LastReload = Time.time;
+       
     }
 
     public void AmmoRestore(int AmmoFromPickUp)

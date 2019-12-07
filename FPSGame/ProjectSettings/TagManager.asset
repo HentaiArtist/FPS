@@ -9,6 +9,7 @@ TagManager:
   - Ammo
   - Bullet
   - Enemy
+  - meele
   layers:
   - Default
   - TransparentFX
